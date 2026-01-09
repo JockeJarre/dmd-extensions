@@ -26,6 +26,29 @@ namespace PinMameDevice
 		private static readonly DeviceInstance DefaultDevice = new DeviceInstance();
 		private static readonly List<DeviceInstance> DmdDevices = new List<DeviceInstance>();
 
+		private static class DpiAwareness
+		{
+			private static readonly IntPtr PerMonitorV2 = new IntPtr(-4);
+
+			[DllImport("user32.dll", SetLastError = true)]
+			private static extern IntPtr SetProcessDpiAwarenessContext(IntPtr dpiContext);
+
+			public static void Apply(Logger logger)
+			{
+				try {
+					var previous = SetProcessDpiAwarenessContext(PerMonitorV2);
+					if (previous == IntPtr.Zero) {
+						var error = Marshal.GetLastWin32Error();
+						logger?.Warn("[dll] SetProcessDpiAwarenessContext failed with error {0}", error);
+					} else {
+						logger?.Info("[dll] SetProcessDpiAwarenessContext set PerMonitorV2 (previous context {0}).", previous);
+					}
+				} catch (Exception e) {
+					logger?.Warn(e, "[dll] Exception while configuring DPI awareness.");
+				}
+			}
+		}
+
 		private class DeviceInstance
 		{
 			public int Id;
@@ -37,6 +60,7 @@ namespace PinMameDevice
 
 		static DmdDevice()
 		{
+			DpiAwareness.Apply(Logger);
 			DefaultDevice.Id = 0;
 			DmdDevices.Add(DefaultDevice);
 		}
