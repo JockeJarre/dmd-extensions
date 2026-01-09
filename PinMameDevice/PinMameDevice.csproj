@@ -222,6 +222,7 @@
   <PropertyGroup>
     <PostBuildEvent>if "$(Platform)"=="x64" (
     copy /Y "$(TargetDir)$(TargetName).dll" "$(TargetDir)$(TargetName)64.dll"
+    copy /Y "$(TargetDir)$(TargetName).dll.config" "$(TargetDir)$(TargetName)64.dll.config"
 )
 
 if not exist "%25VPM_HOME%25" goto done
@@ -229,10 +230,12 @@ if not exist "%25VPM_HOME%25" goto done
 if "$(Platform)"=="x64" (
     echo Copying $(TargetName).dll to %25VPM_HOME%25\$(TargetName)64.dll...
     copy /Y "$(TargetDir)$(TargetName).dll" "%25VPM_HOME%25\$(TargetName)64.dll"
+    copy /Y "$(TargetDir)$(TargetName).dll.config" "%25VPM_HOME%25\$(TargetName)64.dll.config"
 ) else (
     echo Copying $(TargetName).dll to %25VPM_HOME%25...
     copy /Y "$(TargetDir)$(TargetName).dll" "%25VPM_HOME%25"
     copy /Y "$(TargetDir)$(TargetName).pdb" "%25VPM_HOME%25"
+    copy /Y "$(TargetDir)$(TargetName).dll.config" "%25VPM_HOME%25"
 )
 echo Copying DmdDevice.log.config to %25VPM_HOME%25...
 copy /Y "$(TargetDir)DmdDevice.log.config" "%25VPM_HOME%25"

@@ -52,6 +52,7 @@
 	<Fragment>
 		<ComponentGroup Id="DmdDeviceComponents">
 			<ComponentRef Id="DmdDeviceDll"/>
+			<ComponentRef Id="DmdDeviceDllConfig"/>
 			<ComponentRef Id="DmdDeviceIni"/>
 			<ComponentRef Id="DmdDeviceLogConfig"/>
 			<ComponentRef Id="EnvConfigPath"/>
@@ -81,6 +82,17 @@
 					<File Id="DmdDeviceDllFile" Name="DmdDevice64.dll" KeyPath="yes"/>
 				<?else?>
 					<File Id="DmdDeviceDllFile" Name="DmdDevice.dll" KeyPath="yes"/>
+				<?endif?>
+			</Component>
+		</DirectoryRef>
+
+		<!-- DmdDevice.dll config -->
+		<DirectoryRef Id="VPMFOLDER" FileSource="$(var.PinMameDevice.TargetDir)">
+			<Component Id="DmdDeviceDllConfig" Guid="{37D1C4C7-3B8C-4A0F-8DBD-8F1DD46033C2}" NeverOverwrite="yes">
+				<?if $(var.Platform)=x64?>
+					<File Id="DmdDeviceDllConfigFile" Name="DmdDevice64.dll.config" KeyPath="yes"/>
+				<?else?>
+					<File Id="DmdDeviceDllConfigFile" Name="DmdDevice.dll.config" KeyPath="yes"/>
 				<?endif?>
 			</Component>
 		</DirectoryRef>
